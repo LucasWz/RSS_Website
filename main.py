@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template
 import feedparser
-import time
 from fuzzywuzzy import fuzz
 
 app = Flask(__name__)
