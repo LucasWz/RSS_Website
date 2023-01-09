@@ -1,8 +1,11 @@
-from flask import Flask, render_template
 import feedparser
+from flask import render_template, request, Flask
 from fuzzywuzzy import fuzz
 
 app = Flask(__name__)
+
+# global variable to store the RSS feed data
+feed_data = None
 
 def parse_feed(feed_url):
   feed = feedparser.parse(feed_url)
@@ -21,13 +24,26 @@ def fuzzy_search(query, entries):
       matching_entries.append(entry)
   return matching_entries
 
+def refresh_feed():
+  global feed_data
+  feed_url = "https://www.mediapart.fr/articles/feed"
+  feed_data = parse_feed(feed_url)
+
 @app.route("/")
 def home():
-  feed_url = "https://www.mediapart.fr/articles/feed"
-  feed = parse_feed(feed_url)
-  sorted_entries = sort_feed_entries_by_date(feed)
+  global feed_data
+  if feed_data is None:
+    refresh_feed()
+  sorted_entries = sort_feed_entries_by_date(feed_data)
   return render_template("home.html", entries=sorted_entries)
 
+@app.route("/search")
+def search():
+  global feed_data
+  query = request.args.get("search")
+  results = fuzzy_search(query, feed_data.entries)
+  return render_template("search.html", query=query, results=results)
 
-if __name__ == "__main__":
-  app.run()
+@app.route("/refresh")
+def refresh():
+  refresh_feed()
