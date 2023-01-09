@@ -1,52 +1,56 @@
+from typing import Any
 from flask import Flask, request, render_template
 import feedparser
 from fuzzywuzzy import fuzz
 
 app = Flask(__name__)
 
-# global variable to store the RSS feed data
-feed_data = None
+feed_data = []
+FEEDER = {
+    "Médiapart": "https://www.mediapart.fr/articles/feed",
+    "Le Monde": "https://www.lemonde.fr/rss/une.xml",
+}
 
-def parse_feed(feed_url):
-  feed = feedparser.parse(feed_url)
-  return feed
+def parse_feed(feed_url:str) -> dict:
+  return feedparser.parse(feed_url)
 
-def sort_feed_entries_by_date(feed):
-  sorted_entries = sorted(feed.entries, key=lambda entry: entry.published_parsed, reverse=True)
-  return sorted_entries
-
-def fuzzy_search(query, entries):
+def fuzzy_search(query:str, entries) -> list:
   query = query.lower()
   matching_entries = []
   for entry in entries:
     title = entry.title.lower()
-    if fuzz.token_set_ratio(query, title) >= 90:
+    if fuzz.token_set_ratio(query, title) >= 80:
       matching_entries.append(entry)
   return matching_entries
 
-def refresh_feed():
+def refresh_feed() -> list:
   global feed_data
-  feed_url = "https://www.mediapart.fr/articles/feed"
-  feed_data = parse_feed(feed_url)
+  feed_data = []
+  for name, url in FEEDER.items():
+    feed = parse_feed(url)
+    update = {'name':name}
+    updated_feed = [{**d,**update} for d in feed.entries]
+    feed_data.extend(updated_feed)
+  return feed_data
 
 @app.route("/")
 def home():
   global feed_data
-  if feed_data is None:
+  if len(feed_data) == 0:
     refresh_feed()
-  sorted_entries = sort_feed_entries_by_date(feed_data)
-  return render_template("home.html", entries=sorted_entries)
+  return render_template("home.html", entries=feed_data)
 
 @app.route("/search")
 def search():
   global feed_data
   query = request.args.get("search")
-  results = fuzzy_search(query, feed_data.entries)
+  results = fuzzy_search(query, feed_data)
   return render_template("home.html", entries=results)
 
 @app.route("/refresh")
 def refresh():
-  refresh_feed()
-
+  global feed_data
+  feed_data
+  
 if __name__ == "__main__":
   app.run()
