@@ -1,5 +1,6 @@
+from flask import Flask, request, render_template
 import feedparser
-from flask import render_template, request, Flask
+import time
 from fuzzywuzzy import fuzz
 
 app = Flask(__name__)
@@ -42,8 +43,11 @@ def search():
   global feed_data
   query = request.args.get("search")
   results = fuzzy_search(query, feed_data.entries)
-  return render_template("search.html", query=query, results=results)
+  return render_template("home.html", entries=results)
 
 @app.route("/refresh")
 def refresh():
   refresh_feed()
+
+if __name__ == "__main__":
+  app.run()
