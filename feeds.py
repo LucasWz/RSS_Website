@@ -6,6 +6,7 @@ from utils import FeedDict, get_description, struct_to_datetime
 import feedparser
 import logging
 from feeders import SELECT_FEEDERS, UPDATE_FEEDERS
+from collections import defaultdict
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -28,7 +29,7 @@ CREATE TABLE IF NOT EXISTS feeds(
 INSERT_FEEDS = """INSERT INTO feeds(url, link, title, id, description, published)
 VALUES (:url, :link, :title, :id, :description, :published)"""
 
-DELETE_FEEDS_OUTDATED = "DELETE FROM feeds WHERE published >= date('now','-6 months')"
+DELETE_FEEDS_OUTDATED = "DELETE FROM feeds WHERE published <= date('now','-6 months')"
 
 def get_published(entry:FeedDict) -> datetime:
     published = entry.get('published_parsed')
@@ -130,7 +131,21 @@ def fetch_feeds(con):
     data_generator = cur.fetchall()
     return [{k: item[k] for k in item.keys()} for item in data_generator]
 
-        
+
+def fetch_publication_date(con):
+    cur = con.cursor()
+    cur.execute("SELECT published FROM feeds")
+    dates = [row[0] for row in cur.fetchall()]
+    cur.close()
+    return dates
+
+def create_date_counts(dates):
+    date_counts = defaultdict(int)
+    for date in dates:
+        date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+        date_counts[date.date().strftime('%Y-%m-%d')] += 1
+    return date_counts
+
 if __name__ == "__main__": 
     feedparser.USER_AGENT = "BioFlux/1.0 +http://flux.lucaswintz.fr/"
     db = input('>> Input database path :\n')
