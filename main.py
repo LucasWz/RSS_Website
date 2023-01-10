@@ -31,6 +31,7 @@ def close_db(error):
 @app.route("/")
 def home():
   con = get_db()
+  refresh_feed(con)
   feed_data = fetch_feeds(con)
   return render_template("home.html", entries=feed_data)
 
@@ -56,13 +57,13 @@ def refresh():
   return render_template("home.html", entries=feed_data)
 
 
-# @app.route('/calendar')
-# def calendar():
-#   con = get_db()
-#   dates = fetch_publication_date(con)
-#   date_counts = create_date_counts(dates)
-#   data = json.dumps(date_counts)
-#   return render_template('calendar.html', data=data)
+@app.route('/calendar')
+def calendar():
+  con = get_db()
+  dates = fetch_publication_date(con)
+  date_counts = create_date_counts(dates)
+  data = json.dumps(date_counts)
+  return render_template('calendar.html', data=data)
 
 if __name__ == "__main__":
   app.run()
