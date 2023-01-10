@@ -10,7 +10,7 @@
     <div class="subtitle">L'info en continue de l'agriculture bio</div>
 
     <div class="navigation-bar">
-      <button class="nav-element" id="refresh" action="/refresh">🔄</button>
+      <a href="/refresh"><button class="nav-element" id="refresh" action="/refresh">🔄</button></a>
 
       <form action="/search" class="nav-element" id="search">
         <span>
@@ -20,9 +20,16 @@
       </form>
       <a href="/"><button class="nav-element" id="home">🏠</button></a>
     </div>
-    {% for key, value in entries.items() %}
+
+    <h2>Qu'est-ce qu'un flux RSS ?</h2>
+    <p></p>
+    <h2>Sources des Flux RSS</h2>
+    {% for feeder in entries %}
     <ul>
-      <li class="feeders"><a href="{{ value }}">{{ key }}</a></li>
+      <li class="feeders">
+        <p><a href="{{ feeder.link }}">{{ feeder.title }}</a></p>
+        <p>{{ feeder.description }}</p>
+      </li>
     </ul>
     {% endfor %}
   </body>

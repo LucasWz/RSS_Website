@@ -3,14 +3,15 @@
     <title>RSS Feed</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')
       }}">
+
   </head>
   <body>
 
     <h1><a href="/">Bio Flux</a></h1>
     <div class="subtitle">L'info en continue de l'agriculture bio</div>
-
+    <div id="cal-heatmap"></div>
     <div class="navigation-bar">
-      <button class="nav-element" id="refresh" action="/refresh">🔄</button>
+      <a href="/refresh"><button class="nav-element" id="refresh" action="/refresh">🔄</button></a>
 
       <form action="/search" class="nav-element" id="search">
         <span>
@@ -24,7 +25,7 @@
     <div class="article">
       <h2><a href='{{ entry.link }}'>{{ entry.title }}</a></h2>
       <p id="summary">{{ entry.description }}</p>
-      <p id="source">{{ entry.name }} - {{ entry.published }}</p>
+      <p id="source">{{ entry.title }} - {{ entry.published }}</p>
     </div>
     {% endfor %}
   </body>
