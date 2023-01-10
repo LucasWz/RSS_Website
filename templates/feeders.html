@@ -18,14 +18,12 @@
         </span>
         <!-- <button type="submit" class="search">🔎</button> -->
       </form>
-      <a href="/feeders"><button class="nav-element" id="home">❔</button></a>
+      <a href="/"><button class="nav-element" id="home">🏠</button></a>
     </div>
-    {% for entry in entries %}
-    <div class="article">
-      <h2><a href='{{ entry.link }}'>{{ entry.title }}</a></h2>
-      <p id="summary">{{ entry.description }}</p>
-      <p id="source">{{ entry.name }} - {{ entry.published }}</p>
-    </div>
+    {% for key, value in entries.items() %}
+    <ul>
+      <li class="feeders"><a href="{{ value }}">{{ key }}</a></li>
+    </ul>
     {% endfor %}
   </body>
 </html>

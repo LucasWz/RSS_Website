@@ -7,8 +7,23 @@ app = Flask(__name__)
 
 feed_data = []
 FEEDER = {
-    "Médiapart": "https://www.mediapart.fr/articles/feed",
-    "Le Monde": "https://www.lemonde.fr/rss/une.xml",
+    "Ministère de l'Agriculture et de la Souveraineté alimentaire":"https://agriculture.gouv.fr/rss.xml",
+    "Agence Bio": "https://www.agencebio.org/feed/",
+    "ABioDoc - Abeille": "https://abiodoc.docressources.fr/rss.php?id=3",
+    # "ABioDoc - Agroécologie": "https://abiodoc.docressources.fr/rss.php?id=26",
+    # "ABioDoc - Bovin": "https://abiodoc.docressources.fr/rss.php?id=5",
+    # "ABioDoc - Caprin": "https://abiodoc.docressources.fr/rss.php?id=6",
+    # "ABioDoc - Ovin": "https://abiodoc.docressources.fr/rss.php?id=13",
+    # "ABioDoc - Changement climatique": "https://abiodoc.docressources.fr/rss.php?id=24",
+    # "ABioDoc - Eau": "https://abiodoc.docressources.fr/rss.php?id=8",
+    # "ABioDoc - Filière": "https://abiodoc.docressources.fr/rss.php?id=9",
+    # "ABioDoc - Fruit": "https://abiodoc.docressources.fr/rss.php?id=11", 
+    # "ABioDoc - Réglementation": "https://abiodoc.docressources.fr/rss.php?id=18", 
+    # "ABioDoc - PPAM": "https://abiodoc.docressources.fr/rss.php?id=17", 
+    # "ABioDoc - Restauration collective": "https://abiodoc.docressources.fr/rss.php?id=33",
+    # "ABioDoc - Territoire et Société": "https://abiodoc.docressources.fr/rss.php?id=25",  
+    # "ABioDoc - Volailles": "https://abiodoc.docressources.fr/rss.php?id=22", 
+    # "ABioDoc - Maraîchage": "https://abiodoc.docressources.fr/rss.php?id=31", 
 }
 
 def parse_feed(feed_url:str) -> dict:
@@ -18,7 +33,7 @@ def fuzzy_search(query:str, entries) -> list:
   query = query.lower()
   matching_entries = []
   for entry in entries:
-    title = entry.title.lower()
+    title = entry['title'].lower()
     if fuzz.token_set_ratio(query, title) >= 80:
       matching_entries.append(entry)
   return matching_entries
@@ -46,6 +61,11 @@ def search():
   query = request.args.get("search")
   results = fuzzy_search(query, feed_data)
   return render_template("home.html", entries=results)
+
+@app.route("/feeders")
+def feeders():
+  global FEEDER
+  return render_template("feeders.html", entries=FEEDER)
 
 @app.route("/refresh")
 def refresh():

@@ -6,6 +6,38 @@
     html {
         max-width: 100%;
     }
+    form#search {
+        vertical-align: middle;
+    }
+    ul {
+        padding-top: 10px;
+        list-style: none;
+    }
+    li a {
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: 600;
+        color: black;
+    }
+
+    li a:before {
+        content: "🌱";
+        padding-right: 5px;
+      }
+
+    li a:hover{
+        color: var(--bio-color);
+    }
+
+    input {
+        margin-top: 13px;
+        border-radius: 10px;
+        height:30px;
+        width:300px;
+        border: 0px;
+        font-size: 16px;
+        padding-left: 10px;
+    }
     
     /* styles for the refresh button */
     .navigation-bar {
@@ -37,11 +69,15 @@
     }
 
     button:hover {
-        color: red;
+        color: #FFE400;
     }
 
     #search {
         margin-bottom: 0em;
+    }
+
+    #source {
+        font-style: italic;
     }
 
     /* styles for the search bar and home button */
@@ -65,12 +101,19 @@
         font-size: 2.5em;
         margin: 30px 0;
         text-transform:uppercase;
+        margin-bottom: 10px;
     }
     h1::before { 
         content: "📰 ";
         font-weight: 300;
     }
-
+    .subtitle {
+        font-size: 16px;
+        display: flex;
+        margin-bottom: 20px;
+        justify-content: center;
+        vertical-align: center;
+    }
     h1::after { 
         content: " 🌳";
         font-weight: 300;
