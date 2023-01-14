@@ -19,28 +19,12 @@
       <i class="icon icon-chevron-left"></i>
     </button>
     <script type="text/javascript">
-      (function () {
-        var cal = new CalHeatMap();
-        cal.init({
-          itemSelector: '#cal-heatmap',
-          domain: 'month',
-          subDomain: 'x_day',
-          data: '{{ data|safe }}',
-          start: new Date(2000, 0, 5),
-          cellSize: 20,
-          cellPadding: 5,
-          domainGutter: 20,
-          range: 2,
-          domainDynamicDimension: false,
-          previousSelector: '#previous',
-          nextSelector: '#next',
-          domainLabelFormat: function (date) {
-            moment.lang('en');
-            return moment(date).format('MMMM').toUpperCase();
-          },
-          subDomainTextFormat: '%d',
-          legend: [20, 40, 60, 80],
-        });
+      const cal = new CalHeatmap();
+      cal.paint({
+        date: { start: new Date(2020, 0, 15) },
+        domain: { type: 'month' },
+        subDomain: { type: 'day' },
+      });
     </script>
   </body>
 </html>
