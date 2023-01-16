@@ -2,10 +2,12 @@
 <html>
   <head>
     {% if title %}
-    <title>{{ blog_title }} - {{title}}</title>
+      <title>{{ blog_title }} - {{ page_title }}</title>
     {% else %}
       <title>{{ blog_title }</title>
-    {% endif %}
+      {% endif %}
+      
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
     <meta name="{{ blog_title }}">
   </head>
   <body>

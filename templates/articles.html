@@ -1,0 +1,7 @@
+{% for entry in entries %}
+<div class="article">
+  <h2><a href='{{ entry.link }}'>{{ entry.title }}</a></h2>
+  <p id="summary">{{ entry.description }}</p>
+  <p id="source">{{ entry.title }} - {{ entry.published }}</p>
+</div>
+{% endfor %}

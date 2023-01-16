@@ -1,32 +1,5 @@
-<html>
-  <head>
-    <title>RSS Feed</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')
-      }}">
-
-  </head>
-  <body>
-
-    <h1><a href="/">Bio Flux Magazine</a></h1>
-    <div class="subtitle">Première sur l'actualité Bio</div>
-    <div id="cal-heatmap"></div>
-    <div class="navigation-bar">
-      <a href="/refresh"><button class="nav-element" id="refresh" action="/refresh">🔄</button></a>
-
-      <form action="/search" class="nav-element" id="search">
-        <span>
-          <input type="text" placeholder="🔍" name="search">
-        </span>
-        <!-- <button type="submit" class="search">🔎</button> -->
-      </form>
-      <a href="/feeders"><button class="nav-element" id="home">❔</button></a>
-    </div>
-    {% for entry in entries %}
-    <div class="article">
-      <h2><a href='{{ entry.link }}'>{{ entry.title }}</a></h2>
-      <p id="summary">{{ entry.description }}</p>
-      <p id="source">{{ entry.title }} - {{ entry.published }}</p>
-    </div>
-    {% endfor %}
-  </body>
-</html>
+{% extends "layout.html" %}
+{% block content %}
+  {% extends "navbar.html"%}
+  {% block page_content %}{% endblock page_content %}
+{% endblock content %}

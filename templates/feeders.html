@@ -1,26 +1,6 @@
-<html>
-  <head>
-    <title>RSS Feed</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')
-      }}">
-  </head>
-  <body>
-
-    <h1><a href="/">Bio Flux Magazine</a></h1>
-    <div class="subtitle">Première sur la Bio</div>
-
-    <div class="navigation-bar">
-      <a href="/refresh"><button class="nav-element" id="refresh" action="/refresh">🔄</button></a>
-
-      <form action="/search" class="nav-element" id="search">
-        <span>
-          <input type="text" placeholder="🔍" name="search">
-        </span>
-        <!-- <button type="submit" class="search">🔎</button> -->
-      </form>
-      <a href="/"><button class="nav-element" id="home">🏠</button></a>
-    </div>
-
+{% extends "layout.html" %}
+{% block content %}
+    
     <h2>Qu'est-ce qu'un flux RSS ?</h2>
     <p></p>
     <h2>Sources des Flux RSS</h2>
@@ -32,5 +12,5 @@
       </li>
     </ul>
     {% endfor %}
-  </body>
-</html>
+
+{% endblock content %}
